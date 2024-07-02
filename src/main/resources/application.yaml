@@ -1,0 +1,38 @@
+server:
+  port: 8081
+  fullAddress: ${HOST:http://localhost}:${PORT:${server.port}}
+
+spring:
+  application:
+    name: buscador-service
+
+  datasource:
+    url: jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:6543/buscador
+    username: postgres.nfmocsiltmwjrdvjqgos
+    password: F.uG7PvpHrH6.CW
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+##Elasticsearch config
+elasticsearch:
+  host: unir-search-3782366448.us-east-1.bonsaisearch.net
+  credentials:
+    user: g0bb7365s9
+    password: 97onhb18yi
+logging:
+  level:
+    tracer: TRACE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
+    hostname: buscador-service
