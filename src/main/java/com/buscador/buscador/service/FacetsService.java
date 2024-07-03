@@ -26,6 +26,7 @@ public class FacetsService {
 			List<String> voteAverage,
 			String overview,
 			String generosValues,
+			String idFilm,
 			String page) {
 
 		return repository.findPeliculas(
@@ -40,6 +41,7 @@ public class FacetsService {
 				voteAverage,
 				overview,
 				generosValues,
+				idFilm,
 				page);
 	}
         

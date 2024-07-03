@@ -33,6 +33,7 @@ public class FacetsController {
             @RequestParam(required = false) List<String> voteAverage,
             @RequestParam(required = false) String overview,
             @RequestParam(required = false) String generosValues,
+            @RequestParam(required = false) String idFilm,
             @RequestParam(required = false, defaultValue = "0") String page) {
 
         PeliculasQueryResponse response = service.getPeliculas(
@@ -47,6 +48,7 @@ public class FacetsController {
                 voteAverage,
                 overview,
                 generosValues,
+                idFilm,
                 page);
         return ResponseEntity.ok(response);
     }
