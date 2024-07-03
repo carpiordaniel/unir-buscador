@@ -55,6 +55,7 @@ public class DataAccessRepository {
             List<String> voteAverage,
             String overview,
             String generosValues,
+            String idFilm,
             String page) {
 
         BoolQueryBuilder querySpec = QueryBuilders.boolQuery();
@@ -145,7 +146,9 @@ public class DataAccessRepository {
             querySpec.must(QueryBuilders.multiMatchQuery(generosValues, generos_fields).type(MultiMatchQueryBuilder.Type.BOOL_PREFIX));
         }
 
-
+        if (!StringUtils.isEmpty(idFilm)) {
+            querySpec.must(QueryBuilders.termQuery(Consts.FIELD_ID_FILM, idFilm));
+        }
         //Si no se ha seleccionado ningun filtro, se añade un filtro por defecto para que la query no sea vacia
 
         if(!querySpec.hasClauses()) {
