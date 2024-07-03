@@ -67,7 +67,6 @@ public class DataAccessRepository {
             );
         }
 
-
         if (budgetValues != null && !budgetValues.isEmpty()) {
             budgetValues.forEach(
                     runT -> {
@@ -78,14 +77,13 @@ public class DataAccessRepository {
                             } else {
                                 querySpec.must(QueryBuilders.rangeQuery(Consts.FIELD_BUDGET).from(budgetRange[0]).to(budgetRange[1]).includeUpper(false));
                             }
-                        } if (budgetRange.length == 1) {
+                        }
+                        if (budgetRange.length == 1) {
                             querySpec.must(QueryBuilders.rangeQuery(Consts.FIELD_BUDGET).from(budgetRange[0]));
                         }
                     }
             );
         }
-
-
 
         if (voteAverage != null && !voteAverage.isEmpty()) {
             voteAverage.forEach(
@@ -97,7 +95,8 @@ public class DataAccessRepository {
                             } else {
                                 querySpec.must(QueryBuilders.rangeQuery(Consts.FIELD_VOTE_AVERAGE).from(voteRange[0]).to(voteRange[1]).includeUpper(false));
                             }
-                        } if (voteRange.length == 1) {
+                        }
+                        if (voteRange.length == 1) {
                             querySpec.must(QueryBuilders.rangeQuery(Consts.FIELD_VOTE_AVERAGE).from(voteRange[0]));
                         }
                     }
@@ -135,7 +134,8 @@ public class DataAccessRepository {
                             } else {
                                 querySpec.must(QueryBuilders.rangeQuery(Consts.FIELD_RUN_TIME).from(runTRange[0]).to(runTRange[1]).includeUpper(false));
                             }
-                        } if (runTRange.length == 1) {
+                        }
+                        if (runTRange.length == 1) {
                             querySpec.must(QueryBuilders.rangeQuery(Consts.FIELD_RUN_TIME).from(runTRange[0]));
                         }
                     }
@@ -151,7 +151,7 @@ public class DataAccessRepository {
         }
         //Si no se ha seleccionado ningun filtro, se añade un filtro por defecto para que la query no sea vacia
 
-        if(!querySpec.hasClauses()) {
+        if (!querySpec.hasClauses()) {
             querySpec.must(QueryBuilders.matchAllQuery());
         }
 
@@ -164,27 +164,27 @@ public class DataAccessRepository {
                 .terms(Consts.AGG_KEY_ORIGINAL_LANGUAGE)
                 .field(Consts.FIELD_ORIGINAL_LANGUAGE).size(10000));
 
-                //Se incluyen las agregaciones de rango para los campos edad y salario
+        //Se incluyen las agregaciones de rango para los campos edad y salario
         nativeSearchQueryBuilder.addAggregation(AggregationBuilders
                 .range(Consts.AGG_KEY_RUN_TIME)
                 .field(Consts.FIELD_RUN_TIME)
-                .addUnboundedTo(Consts.AGG_KEY_RUN_TIME_0,60)
+                .addUnboundedTo(Consts.AGG_KEY_RUN_TIME_0, 60)
                 .addRange(Consts.AGG_KEY_RUN_TIME_1, 60, 90)
-                .addUnboundedFrom(Consts.AGG_KEY_RUN_TIME_2,90));
+                .addUnboundedFrom(Consts.AGG_KEY_RUN_TIME_2, 90));
 
         nativeSearchQueryBuilder.addAggregation(AggregationBuilders
                 .range(Consts.AGG_KEY_BUDGET)
                 .field(Consts.FIELD_BUDGET)
-                .addUnboundedTo(Consts.AGG_KEY_BUDGET_0,2000000)
+                .addUnboundedTo(Consts.AGG_KEY_BUDGET_0, 2000000)
                 .addRange(Consts.AGG_KEY_BUDGET_1, 2000000, 10000000)
-                .addUnboundedFrom(Consts.AGG_KEY_BUDGET_2,10000000));
+                .addUnboundedFrom(Consts.AGG_KEY_BUDGET_2, 10000000));
 
-      nativeSearchQueryBuilder.addAggregation(AggregationBuilders
+        nativeSearchQueryBuilder.addAggregation(AggregationBuilders
                 .range(Consts.AGG_KEY_VOTE_AVERAGE)
                 .field(Consts.FIELD_VOTE_AVERAGE)
-                .addUnboundedTo(Consts.AGG_KEY_VOTE_AVERAGE_0,5)
+                .addUnboundedTo(Consts.AGG_KEY_VOTE_AVERAGE_0, 5)
                 .addRange(Consts.AGG_KEY_VOTE_AVERAGE_1, 5, 7)
-                .addUnboundedFrom(Consts.AGG_KEY_VOTE_AVERAGE_2,7));
+                .addUnboundedFrom(Consts.AGG_KEY_VOTE_AVERAGE_2, 7));
 
         //Se establece un maximo de 5 resultados, va acorde con el tamaño de la pagina
         nativeSearchQueryBuilder.withMaxResults(20);
@@ -193,7 +193,7 @@ public class DataAccessRepository {
         //El tamaño de la pagina es de 5 elementos (pero el propio llamante puede cambiarlo si se habilita en la API)
         int pageInt = Integer.parseInt(page);
         if (pageInt >= 0) {
-            nativeSearchQueryBuilder.withPageable(PageRequest.of(pageInt,5));
+            nativeSearchQueryBuilder.withPageable(PageRequest.of(pageInt, 5));
         }
 
         //Se construye la query
@@ -204,7 +204,9 @@ public class DataAccessRepository {
     }
 
     /**
-     * Metodo que convierte los resultados de la busqueda en una lista de empleados.
+     * Metodo que convierte los resultados de la busqueda en una lista de
+     * empleados.
+     *
      * @param result Resultados de la busqueda.
      * @return Lista de empleados.
      */
@@ -213,8 +215,10 @@ public class DataAccessRepository {
     }
 
     /**
-     * Metodo que convierte las agregaciones de la busqueda en una lista de detalles de agregaciones.
-     * Se ha de tener en cuenta que el tipo de agregacion puede ser de tipo rango o de tipo termino.
+     * Metodo que convierte las agregaciones de la busqueda en una lista de
+     * detalles de agregaciones. Se ha de tener en cuenta que el tipo de
+     * agregacion puede ser de tipo rango o de tipo termino.
+     *
      * @param result Resultados de la busqueda.
      * @return Lista de detalles de agregaciones.
      */
@@ -231,7 +235,7 @@ public class DataAccessRepository {
             aggs.forEach((key, value) -> {
 
                 //Si no existe la clave en el mapa, la creamos
-                if(!responseAggregations.containsKey(key)) {
+                if (!responseAggregations.containsKey(key)) {
                     responseAggregations.put(key, new LinkedList<>());
                 }
 
