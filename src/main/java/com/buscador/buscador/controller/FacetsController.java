@@ -20,7 +20,7 @@ public class FacetsController {
 
     private final FacetsService service;
 
-    @GetMapping("/peliculas")
+    @GetMapping("/api/peliculas")
     public ResponseEntity<PeliculasQueryResponse> getPeliculas(
             @RequestParam(required = false) List<String> titleValues,
             @RequestParam(required = false) List<String> budgetValues,
